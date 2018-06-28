@@ -1,0 +1,370 @@
+<html>
+    <head>
+        <title>Cricket Score Board</title>
+    </head>
+    <body>
+        <button onclick="startMatch()">Start Match</button>
+        <script>
+            var teamScore=0, wickets=0, score1=0, score2=0, currentBall = 0.0, wicketTaken=0;
+            var currentBallText="Overs", wicketTakenText="wickets";
+            var striker, nonStriker,p=0;
+            var players=[1,2,3,4,5,6,7,8,9,10,11];
+            var i=0,j=1,c=1,overs=0.0;
+            var player1="player1",player2="player2";
+            var india=["Rohit", "Dhawan", "Kohli", "Dhoni", "Raina", "Pandya", "Ashwin", "Jadeja", "Bhumra",
+                            "Bhuvi", "Umesh"];
+            //var australia=[""]
+            var australia=["Finch", "Smith", "Warner", "Head", "Alex", "Mitchell", "Maxwell", "Jack", 
+                            "Kane", "Billy", "Tye"];
+            var indiaScore=[0,0,0,0,0,0,0,0,0,0,0];
+            var australiaScore=[0,0,0,0,0,0,0,0,0,0,0];
+            var indiaBallCount=[0,0,0,0,0,0,0,0,0,0,0];
+            var australiaBallCount=[0,0,0,0,0,0,0,0,0,0,0];
+            var teamScoreIndia=0, teamScoreAustralia=0,indiaWickets,australiaWickets;
+            var battingTeam=india;
+            var battingTeamName="India";
+            var battingTeamScore=indiaScore;
+            var battingTeamBallCount=indiaBallCount;
+            var innings=1;
+            function startMatch(){
+                striker=battingTeam[i];
+                //player1=striker;
+                nonStriker=battingTeam[j];
+                //player2=nonStriker;
+                scoreBoard();
+                playersList();
+            }
+            function one(){
+                teamScore+=1;
+                if(striker===battingTeam[i]){
+                    battingTeamScore[i]+=1;
+                    battingTeamBallCount[i]+=1;
+                }else{
+                    battingTeamScore[j]+=1;
+                    battingTeamBallCount[j]+=1;
+                }
+                strikeChange();
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function two(){
+                teamScore+=2;
+                if(striker===battingTeam[i]){
+                    battingTeamScore[i]+=2;
+                    battingTeamBallCount[i]+=1;
+                }else{
+                    battingTeamScore[j]+=2;
+                    battingTeamBallCount[j]+=1;
+                }
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function three(){
+                teamScore+=3;
+                if(striker===battingTeam[i]){
+                    battingTeamScore[i]+=3;
+                    battingTeamBallCount[i]+=1;
+                }else{
+                    battingTeamScore[j]+=3;
+                    battingTeamBallCount[j]+=1;
+                }
+                strikeChange();
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function four(){
+                teamScore+=4;
+                if(striker===battingTeam[i]){
+                    battingTeamScore[i]+=4;
+                    battingTeamBallCount[i]+=1;
+                }else{
+                    battingTeamScore[j]+=4;
+                    battingTeamBallCount[j]+=1;
+                }
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function six(){
+                teamScore+=6;
+                if(striker===battingTeam[i]){
+                    battingTeamScore[i]+=6;
+                    battingTeamBallCount[i]+=1;
+                }else{
+                    battingTeamScore[j]+=6;
+                    battingTeamBallCount[j]+=1
+
+                }
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function wide(){
+                teamScore+=1;
+                scoreBoard();
+                playersList();
+            }
+            function wicket(){
+                if(striker===battingTeam[i]){
+                    if(i<j){
+                        i=j+1;
+                        striker=battingTeam[i];
+                    }else{
+                        i=i+1;
+                        striker=battingTeam[i];
+                    }
+                }else{
+                    if(j<i){
+                        j=i+1;
+                        striker=battingTeam[j];
+                    }else{
+                        j=j+1;
+                        striker=battingTeam[j];
+                    }
+                }
+                wicketTaken++;
+                oversCalculation();
+                scoreBoard();
+                playersList();
+            }
+            function strikeChange(){
+                var temp;
+                temp=striker;
+                striker=nonStriker;
+                nonStriker=temp;
+            }
+            function oversCalculation(){
+                if(c<6){
+                    if(c%6==0){
+                        currentBall=parseInt(currentBall+0.5);
+                        overs=currentBall.toFixed(1);
+                        c++;
+                        strikeChange();
+                    }else{
+                        currentBall=currentBall+0.1;
+                        //currentBall=currentBall.toFixed(1);
+                        overs = currentBall.toFixed(1);
+                        c++;
+                    }
+                }else{
+                    if(innings==1){
+                        india=battingTeam;
+                        indiaScore=battingTeamScore;
+                        battingTeam=australia;
+                        battingTeamScore=australiaScore;
+                        indiaBallCount=battingTeamBallCount;
+                        battingTeamBallCount=0;
+                        innings++;
+                        battingTeamName="Australia";
+                        i=0;j=1;
+                        teamScoreIndia=teamScore;
+                        indiaWickets=wickets;
+                        wicketTaken=0;
+                        teamScore=0;
+                        currentBall=0.0;
+                        c=1;
+                        overs=0.0;
+                        console.log(teamScoreIndia);
+                        scoreBoard();
+                        startMatch(); 
+                    }else{
+                        australia=battingTeam;
+                        australiaScore=battingTeamScore;
+                        australiaBallCount=battingTeamBallCount;
+                        teamScoreAustralia=teamScore;
+                        australiaWickets=wickets;
+                        console.log(teamScoreAustralia);
+                        endMatch();
+                    }                                                              
+                }   
+            }
+            function endMatch(){
+                document.getElementById("teamScoreIndia").innerHTML="India : "+teamScoreIndia;
+                document.getElementById("teamScoreAustralia").innerHTML="Australia : "+teamScoreAustralia;
+                if(teamScoreIndia>teamScoreAustralia){
+                    document.getElementById("result").innerHTML="India won the match";
+                }else{
+                    document.getElementById("result").innerHTML="Australia won the match";
+                }
+                matchSummary();
+                console.log("Match ended");
+            }
+            function playersList(){
+                for(p=0;p<11;p++){
+                    document.getElementById(p).innerHTML=battingTeam[p]+" - "+battingTeamScore[p]+"("+battingTeamBallCount[p]+")";
+                }
+            }
+            function scoreBoard(){
+                document.getElementById("innings").innerHTML=innings;
+                document.getElementById("battingTeamName").innerHTML=battingTeamName;
+                document.getElementById("teamScore").innerHTML=teamScore;
+                document.getElementById("line").innerHTML="-";
+                document.getElementById("wickets").innerHTML=wicketTaken;
+                document.getElementById("striker").innerHTML=battingTeam[i];
+                document.getElementById("nonStriker").innerHTML=battingTeam[j];
+                if(striker===battingTeam[i]){
+                    document.getElementById("strikerIsPlayer1").style.display='block';
+                    document.getElementById('strikerIsPlayer2').style.display='none';
+                }else{
+                    document.getElementById("strikerIsPlayer2").style.display='block';
+                    document.getElementById('strikerIsPlayer1').style.display='none'
+                }
+                document.getElementById("score1").innerHTML=battingTeamScore[i];
+                document.getElementById("score2").innerHTML=battingTeamScore[j];
+                document.getElementById("currentBall").innerHTML=overs;
+                document.getElementById("currentBallText").innerHTML=currentBallText;
+            }
+            function matchSummary(){
+                document.getElementById("summary").innerHTML="Match Summary";
+                document.getElementById("india").innerHTML="India";
+                document.getElementById("australia").innerHTML="Australia";
+                for(k=0;k<11;k++){
+                    var t=k+20
+                    document.getElementById(t).innerHTML=india[k]+" - "+indiaScore[k]+"("+indiaBallCount[k]+")";
+                }
+                for(k=0;k<11;k++){
+                    var t=k+40;
+                    document.getElementById(t).innerHTML=australia[k]+" - "+australiaScore[k]+"("+australiaBallCount[k]+")";                    
+                }
+            }
+        </script>
+                <table>
+                    <tr>
+                        <td><p>Innings : </p></td>
+                        <td><p id="innings">0</p></td>
+                    </tr>
+                    <tr>
+                        <td><p id="battingTeamName">Team1</p></td>
+                        <td><p>Batting</p></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <p id="teamScore">0</p>
+                        </td>
+                        <td>
+                            <p id="line">-</p>
+                        </td>
+                        <td>
+                            <p id="wickets">0</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="striker">Striker</p>
+                        </td>
+                        <td>
+                            <p id="strikerIsPlayer1">*</p>
+                        </td>
+                        <td>
+                            <p id="nonStriker">Non Striker</p>
+                        </td>
+                        <td>
+                            <p id="strikerIsPlayer2">*</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="score1">0</p>
+                        </td>
+                        <td>
+                            <p id="score2">0</p>
+                        </td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <th>
+                            <p id="currentBallText">Overs</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="currentBall">0.0</p>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                        <tr>
+                            <th><h2 id="teamScoreIndia"></h2></th>
+                        </tr>
+                        <tr>
+                            <th><h2 id="teamScoreAustralia"></h2></th>
+                        </tr>
+                        <tr>
+                            <th><h2 id="result"></h2></th>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td><h1 id="summary"></h1></td>
+                        </tr>
+                        <tr>
+                            <td><h3 id="india"></h3></td>
+                            <td><h3 id="australia"></h3></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <tr><p id=20></p></tr>
+                                    <tr><p id=21></p></tr>
+                                    <tr><p id=22></p></tr>
+                                    <tr><p id=23></p></tr>
+                                    <tr><p id=24></p></tr>
+                                    <tr><p id=25></p></tr>
+                                    <tr><p id=26></p></tr>
+                                    <tr><p id=27></p></tr>
+                                    <tr><p id=28></p></tr>
+                                    <tr><p id=29></p></tr>
+                                    <tr><p id=30></p></tr>
+                            </td>
+                            <td>
+                                    <tr><p id=40></p></tr>
+                                    <tr><p id=41></p></tr>
+                                    <tr><p id=42></p></tr>
+                                    <tr><p id=43></p></tr>
+                                    <tr><p id=44></p></tr>
+                                    <tr><p id=45></p></tr>
+                                    <tr><p id=46></p></tr>
+                                    <tr><p id=47></p></tr>
+                                    <tr><p id=48></p></tr>
+                                    <tr><p id=49></p></tr>
+                                    <tr><p id=50></p></tr>
+                            </td>
+                        </tr>
+                    </table>
+            <div id="userInput">
+                <table>
+                    <tr>
+                        <td>
+                            <p id="currentBall"></p>
+                        </td>
+                            <td><button onclick=one()>One</button></td>
+                            <td><button onclick="two()">Two</button></td>
+                            <td><button onclick="three()">Three</button></td>
+                            <td><button onclick="four()">Four</button></td>
+                            <td><button onclick="six()">Six</button></td>
+                            <td><button onclick="wide()">Wide</button></td>
+                            <td><button onclick="wicket()">Wicket</button></td>
+                        </td>        
+                    </tr>
+                </table>
+            </div>
+                <table>
+                        <tr><p id=0></p></tr>
+                        <tr><p id=1></p></tr>
+                        <tr><p id=2></p></tr>
+                        <tr><p id=3></p></tr>
+                        <tr><p id=4></p></tr>
+                        <tr><p id=5></p></tr>
+                        <tr><p id=6></p></tr>
+                        <tr><p id=7></p></tr>
+                        <tr><p id=8></p></tr>
+                        <tr><p id=9></p></tr>
+                        <tr><p id=10></p></tr>
+                </table>
+                
+            </div>
+    </body>
+</html>
